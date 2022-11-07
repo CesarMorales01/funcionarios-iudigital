@@ -37,18 +37,10 @@ public class Main extends javax.swing.JFrame {
         sexoController= new SexoController();
         tipoIdentificacionController= new TipoIdentificacionController();
         estadoCivilController= new EstadoCivilController();
-        //se carga opciones sexo, tipo identifacion y funcionarios despues de tipo de cargarOpcionesEstadoCivil...
+        //se carga opciones sexo, tipo identificacion y funcionarios despues de cargarOpcionesEstadoCivil...
         // Esto porque se debe cargar las lists de opciones para despues buscar los nombres de sexo, tipo identificacion, etc.
         cargarOpcionesEstadoCivil();
         addListener();
-      
-      /*      
-           TFNombres.setText("Leidy");
-           TFApellidos.setText("Garcia");
-           TFDireccion.setText("Circunvalar");
-           TFFechaNacimiento.setText("2022");
-           TFTelefono.setText("302");
-        */
     }
     
      private void cargarOpcionesTipoIdentificacion(){
