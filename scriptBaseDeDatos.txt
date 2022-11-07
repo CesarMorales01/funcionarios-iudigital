@@ -1,0 +1,120 @@
+create database FuncionariosDAO;
+
+create table tipo_identificacion (
+  id_tipo serial primary key,
+  tipo_identificacion varchar (30)
+);
+
+insert into tipo_identificacion (tipo_identificacion) values ('Cédula de ciudadanía');
+insert into tipo_identificacion (tipo_identificacion) values ('Cédula de extranjeria');
+insert into tipo_identificacion (tipo_identificacion) values ('Pasaporte');
+
+select * from tipo_identificacion ;
+
+create table sexo (
+  id_sexo serial primary key,
+  sexo varchar (20)
+);
+
+insert into sexo  (sexo) values ('Femenino');
+insert into sexo  (sexo) values ('Masculino');
+insert into sexo  (sexo) values ('Otro');
+
+select * from sexo s;
+
+create table estado_civil (
+  id_estadocivil serial primary key,
+  nombre_estado varchar (20) not null
+);
+
+insert into estado_civil (nombre_estado) values ('Soltero');
+insert into estado_civil (nombre_estado) values ('Casado');
+insert into estado_civil (nombre_estado) values ('Otro');
+
+select * from estado_civil;
+
+create table funcionarios(
+  id_funcionario serial primary key,
+  fk_id_sexo integer not null,
+  fk_id_estadocivil integer not null,
+  nombre varchar (20)not null,
+  apellido varchar (20) not null,
+  cedulafuncionario integer not null,
+  fechanacimiento  varchar (20),
+  direccionfuncionario varchar (100),
+  foreign key (fk_id_sexo) references sexo(id_sexo),
+  foreign key (fk_id_estadocivil) references estado_civil(id_estadocivil)
+);
+
+ alter table funcionarios
+  add constraint UQ_documento
+  unique (cedulafuncionario);
+  
+  ALTER TABLE funcionarios  
+ADD COLUMN fk_id_tipo_identificacion integer;
+  
+  ALTER TABLE funcionarios  
+   ADD CONSTRAINT fk_id_tipo_identificacion
+   foreign key (fk_id_tipo_identificacion) references tipo_identificacion(id_tipo)
+   
+
+insert into funcionarios (fk_id_sexo, fk_id_estadocivil, nombre, apellidos, cedulafuncionario, fechanacimiento, direccionfuncionario) values ('1', '1', 'Cesar', 'Morales', '1056', '16', 'Calle', '1');
+
+select * from Funcionarios;
+
+create table familiares (
+  id_familiar serial primary key,
+  fk_id_funcionario integer not null,
+  fk_id_sexo integer not null,
+  nombre varchar (20)not null,
+  apellidos varchar (20) not null,
+  numcedula integer not null,
+  fechanacimiento  varchar (20),
+  direccion varchar (50),
+  rol varchar (20) not null,
+  foreign key (fk_id_funcionario) references funcionarios(id_funcionario),
+  foreign key (fk_id_sexo) references sexo(id_sexo)
+);
+
+ alter table familiares 
+  add constraint UQ_documento_familiar
+  unique (numcedula);
+
+insert into familiares (fk_id_funcionario, fk_id_sexo, nombre, apellido, numcedula, fechanacimiento, direccion, rol) values ('1', '1', 'Cristina', 'Morales', '1055', '16', 'Calle', 'Hermana');
+
+select * from familiares;
+
+create table telefonos (
+  id_telefono serial primary key,
+  num_telefono varchar (20),
+  fk_id_telefono_propietario integer,
+  foreign key (fk_id_telefono_propietario) references funcionarios(cedulafuncionario)
+);
+
+insert into telefonos (num_telefono, fk_id_telefono_propietario) values ('311', '1056');
+
+select * from telefonos;
+
+ create table telefonos_familiares (
+  id_telefono serial primary key,
+  num_telefono varchar (20),
+  fk_id_telefono_propietario integer,
+  foreign key (fk_id_telefono_propietario) references familiares(numcedula)
+);
+
+insert into telefonos_familiares (num_telefono, fk_id_telefono_propietario) values ('311', '1055');
+
+select * from telefonos_familiares;
+
+
+
+create table informaciones_academicas(
+  id_informacionacademica serial primary key,
+  fk_id_funcionario integer null,
+  nivelestudio varchar (20) not null,
+  universidad varchar (50),
+  tituloestudio varchar (20) not null,
+  foreign key (fk_id_funcionario) references funcionarios(id_funcionario)
+);
+
+select * from informaciones_academicas;
